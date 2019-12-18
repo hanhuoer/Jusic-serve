@@ -1,0 +1,30 @@
+package com.scoder.jusic.model;
+
+/**
+ * @author H
+ */
+
+public enum MessageType {
+    /**
+     *
+     */
+    NOTICE("NOTICE"),
+    ONLINE("ONLINE"),
+    SETTING_NAME("SETTING_NAME"),
+    AUTH("AUTH"),
+    AUTH_ROOT("AUTH_ROOT"),
+    AUTH_ADMIN("AUTH_ADMIN"),
+    MUSIC("MUSIC"),
+    PICK("PICK"),
+    CHAT("CHAT");
+
+    MessageType(String type) {
+        this.type = type;
+    }
+
+    private String type;
+
+    public String type() {
+        return this.type;
+    }
+}
