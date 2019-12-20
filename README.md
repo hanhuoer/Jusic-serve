@@ -26,7 +26,9 @@
                                                                                    
 ```
 
+
 安装过程可以参考 [Wiki 页面](https://github.com/hanhuoer/Jusic-serve/wiki)，如果遇到问题可以在本项目提 issue
+
 
 ## 项目背景
 
@@ -34,7 +36,9 @@
 
 接下来 Jusic 就诞生了，嗯...这也是对所学 websocket 知识的一次实践。
 
+后端: 本项目
 
+前端: [Jusic-ui](https://github.com/hanhuoer/Jusic-ui)
 
 ## 安装
 
