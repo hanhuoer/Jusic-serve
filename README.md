@@ -26,6 +26,8 @@
                                                                                    
 ```
 
+安装过程可以参考 [Wiki 页面](https://github.com/hanhuoer/Jusic-serve/wiki)，如果遇到问题可以在本项目提 issue
+
 ## 项目背景
 
 逛 V 站的时候，偶然间看到一篇帖子介绍 [SyncMusic 点歌台](https://github.com/kasuganosoras/SyncMusic) 觉得挺有意思 ...
