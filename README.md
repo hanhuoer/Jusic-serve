@@ -102,7 +102,7 @@
 
 Jusic：[Jusic 点歌台](http://music.scoder.club/)
 
-![preview](https://raw.githubusercontent.com/hanhuoer/Jusic-serve/master/doc/images/preview.png)
+![preview](./doc/images/preview1.png)
 
 
 
