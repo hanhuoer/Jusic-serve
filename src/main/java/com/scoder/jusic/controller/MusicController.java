@@ -145,6 +145,7 @@ public class MusicController {
             musicService.deletePickMusic(music);
             LinkedList<Music> pickList = musicService.getPickList();
             log.info("session: {} 删除音乐: {} 已成功, 即将广播删除后的播放列表", sessionId, music.getName());
+            sessionService.send(sessionId, MessageType.NOTICE, Response.success((Object) null, "删除成功"));
             sessionService.send(MessageType.PICK, Response.success(pickList, "删除后的播放列表"));
         }
     }
@@ -166,6 +167,7 @@ public class MusicController {
             musicService.topPickMusic(music);
             LinkedList<Music> pickList = musicService.getPickList();
             log.info("session: {} 置顶音乐: {} 已成功, 即将广播置顶操作后的播放列表", sessionId, music.getName());
+            sessionService.send(sessionId, MessageType.NOTICE, Response.success((Object) null, "置顶成功"));
             sessionService.send(MessageType.PICK, Response.success(pickList, "置顶后的播放列表"));
         }
     }
