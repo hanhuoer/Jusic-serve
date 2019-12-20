@@ -59,6 +59,9 @@ public class MusicController {
         } else if (musicService.isBlack(pick.getId())) {
             log.info("点歌失败, 音乐: {} 已被拉黑, 关键字: {}, 即将向客户端反馈点歌失败消息", pick.getId(), music.getName());
             sessionService.send(MessageType.NOTICE, Response.failure((Object) null, "点歌失败, 音乐已被拉黑"));
+        } else if (musicService.isPicked(pick.getId())) {
+            log.info("点歌失败, 音乐: {} 已在播放列表中, 关键字: {}, 即将向客户端反馈点歌失败消息", pick.getId(), music.getName());
+            sessionService.send(MessageType.NOTICE, Response.failure((Object) null, "点歌失败, 已在播放列表"));
         } else {
             log.info("点歌成功, 音乐: {}, 时长: {}, 链接: {}, 即将向客户端广播消息以及列表", pick.getName(), pick.getDuration(), pick.getUrl());
             musicService.toPick(sessionId, pick);

@@ -100,4 +100,12 @@ public interface MusicService {
      * @return -
      */
     boolean isBlack(String id);
+
+    /**
+     * is picked ?
+     *
+     * @param id music id
+     * @return
+     */
+    boolean isPicked(String id);
 }

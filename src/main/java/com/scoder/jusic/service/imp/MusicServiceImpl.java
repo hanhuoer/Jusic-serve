@@ -209,4 +209,19 @@ public class MusicServiceImpl implements MusicService {
         return musicBlackRepository.isMember(id);
     }
 
+    @Override
+    public boolean isPicked(String id) {
+        List<Music> pickMusicList = musicPickRepository.getPickMusicList();
+        for (Music music : pickMusicList) {
+            if (music.getId().equals(id)) {
+                return true;
+            }
+        }
+        Music playing = musicPlayingRepository.getPlaying();
+        if (playing.getId().equals(id)) {
+            return true;
+        }
+        return false;
+    }
+
 }
