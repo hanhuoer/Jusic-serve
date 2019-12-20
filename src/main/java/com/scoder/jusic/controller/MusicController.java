@@ -49,6 +49,7 @@ public class MusicController {
         Chat chat = new Chat();
         chat.setContent("点歌 " + music.getName());
         chat.setNickName(nickName);
+        chat.setSessionId(sessionId);
         sessionService.send(MessageType.CHAT, Response.success(chat));
 
         // 点歌结果反馈
@@ -79,6 +80,7 @@ public class MusicController {
         String sessionId = accessor.getHeader("simpSessionId").toString();
         String nickName = sessionService.getNickName(sessionId);
         Chat chat = new Chat();
+        chat.setSessionId(sessionId);
         chat.setContent("投票切歌");
         chat.setNickName(nickName);
         sessionService.send(MessageType.CHAT, Response.success(chat));
@@ -90,6 +92,7 @@ public class MusicController {
             // 管理员
             configService.setPushSwitch(true);
             log.info("推送开关开启, 原因: 投票通过 - 管理员参与投票");
+            sessionService.send(MessageType.NOTICE, Response.success((Object) null, "切歌成功"));
         } else {
             // 投票
             vote = musicService.vote(sessionId);
@@ -98,8 +101,8 @@ public class MusicController {
                 sessionService.send(MessageType.NOTICE, Response.failure((Object) null, "你已经投过票了"));
                 log.info("你已经投过票了");
             }
+            sessionService.send(MessageType.NOTICE, Response.success((Object) null, voteCount + "/" + size + " 投票成功"));
         }
-        sessionService.send(MessageType.NOTICE, Response.success((Object) null, voteCount + "/" + size + " 投票成功"));
         log.info("投票成功");
         if (voteCount == 1 && vote != 0 && voteCount < size * jusicProperties.getVoteRate()) {
             sessionService.send(MessageType.NOTICE, Response.success((Object) null, "有人希望切歌, 如果支持请发送“投票切歌”"));
