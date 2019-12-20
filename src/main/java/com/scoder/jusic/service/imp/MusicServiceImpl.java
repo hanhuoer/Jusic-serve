@@ -171,7 +171,7 @@ public class MusicServiceImpl implements MusicService {
     public void deletePickMusic(Music music) {
         List<Music> pickMusicList = musicPickRepository.getPickMusicList();
         for (int i = 0; i < pickMusicList.size(); i++) {
-            if (music.getName().equals(pickMusicList.get(i).getName())) {
+            if (music.getId().equals(pickMusicList.get(i).getId())) {
                 pickMusicList.remove(pickMusicList.get(i));
             }
         }
@@ -184,7 +184,7 @@ public class MusicServiceImpl implements MusicService {
         LinkedList<Music> newPickMusicList = new LinkedList<>();
         List<Music> pickMusicList = musicPickRepository.getPickMusicList();
         for (int i = 0; i < pickMusicList.size(); i++) {
-            if (music.getName().equals(pickMusicList.get(i).getName())) {
+            if (music.getId().equals(pickMusicList.get(i).getId())) {
                 newPickMusicList.add(pickMusicList.get(i));
                 pickMusicList.remove(pickMusicList.get(i));
             }
