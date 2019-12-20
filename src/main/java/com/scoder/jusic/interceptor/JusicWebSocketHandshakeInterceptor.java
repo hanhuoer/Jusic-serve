@@ -1,5 +1,6 @@
 package com.scoder.jusic.interceptor;
 
+import com.scoder.jusic.util.IPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -20,7 +21,7 @@ public class JusicWebSocketHandshakeInterceptor implements HandshakeInterceptor 
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        attributes.put("remoteAddress", request.getRemoteAddress());
+        attributes.put("remoteAddress", IPUtils.getRemoteAddress(request));
         return true;
     }
 

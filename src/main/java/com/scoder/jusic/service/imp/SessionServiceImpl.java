@@ -59,7 +59,7 @@ public class SessionServiceImpl implements SessionService {
                 .sessionId(session.getId())
                 .name("")
                 .nickName("")
-                .remoteAddress(IPUtils.getIPV4(session))
+                .remoteAddress(session.getAttributes().get("remoteAddress").toString())
                 .role("default")
                 .build();
         sessionRepository.setSession(user);

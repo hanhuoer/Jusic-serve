@@ -57,7 +57,7 @@ public class IPUtils {
 
     public static String getIPV4(WebSocketSession session) {
         try {
-            String s = session.getRemoteAddress().getAddress().toString();
+            String s = session.getAttributes().get("remoteAddress").toString();
             if (s.matches(".*?:.*?")) {
                 return "127.0.0.1";
             } else {

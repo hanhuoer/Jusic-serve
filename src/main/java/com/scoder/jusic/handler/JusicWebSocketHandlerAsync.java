@@ -37,7 +37,7 @@ public class JusicWebSocketHandlerAsync {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessionService.putSession(session);
         int size = musicBar.getSessions().size();
-        log.info("Connection established: {}, and now online: {}", session.getId(), size);
+        log.info("Connection established: {}, ip: {}, and now online: {}", session.getId(), session.getAttributes().get("remoteAddress").toString(), size);
         Thread.sleep(500);
         sessionService.send(session, MessageType.NOTICE, Response.success((Object) null, "连接到服务器成功！"));
         // 1. send online
