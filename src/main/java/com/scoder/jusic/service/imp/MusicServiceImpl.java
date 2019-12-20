@@ -173,6 +173,7 @@ public class MusicServiceImpl implements MusicService {
         for (int i = 0; i < pickMusicList.size(); i++) {
             if (music.getId().equals(pickMusicList.get(i).getId())) {
                 pickMusicList.remove(pickMusicList.get(i));
+                break;
             }
         }
         musicPickRepository.reset();
@@ -181,17 +182,18 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void topPickMusic(Music music) {
-        LinkedList<Music> newPickMusicList = new LinkedList<>();
+        List<Music> newPickMusicList = new LinkedList<>();
         List<Music> pickMusicList = musicPickRepository.getPickMusicList();
         for (int i = 0; i < pickMusicList.size(); i++) {
             if (music.getId().equals(pickMusicList.get(i).getId())) {
                 newPickMusicList.add(pickMusicList.get(i));
                 pickMusicList.remove(pickMusicList.get(i));
+                break;
             }
         }
-        newPickMusicList.addAll(pickMusicList);
+        pickMusicList.addAll(newPickMusicList);
         musicPickRepository.reset();
-        musicPickRepository.leftPushAll(newPickMusicList.toArray());
+        musicPickRepository.rightPushAll(pickMusicList.toArray());
     }
 
     @Override
@@ -218,10 +220,7 @@ public class MusicServiceImpl implements MusicService {
             }
         }
         Music playing = musicPlayingRepository.getPlaying();
-        if (playing.getId().equals(id)) {
-            return true;
-        }
-        return false;
+        return playing.getId().equals(id);
     }
 
 }
