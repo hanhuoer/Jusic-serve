@@ -14,6 +14,7 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = -5505741219675317455L;
 
+    private String sessionId;
     /**
      * 内容
      */

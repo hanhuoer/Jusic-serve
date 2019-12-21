@@ -45,6 +45,7 @@ public class MusicServiceImpl implements MusicService {
      */
     @Override
     public Music toPick(String sessionId, Music music) {
+        music.setSessionId(sessionId);
         music.setPickTime(System.currentTimeMillis());
         music.setNickName(sessionRepository.getSession(sessionId).getNickName());
         musicPickRepository.leftPush(music);
