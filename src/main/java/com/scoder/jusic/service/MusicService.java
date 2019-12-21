@@ -64,6 +64,14 @@ public interface MusicService {
     Music getMusic(String keyword);
 
     /**
+     * get music url
+     *
+     * @param musicId music id
+     * @return url
+     */
+    String getMusicUrl(String musicId);
+
+    /**
      * 删除音乐
      *
      * @param music music

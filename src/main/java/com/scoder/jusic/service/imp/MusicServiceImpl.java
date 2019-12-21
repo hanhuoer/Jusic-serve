@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author H
@@ -71,9 +72,13 @@ public class MusicServiceImpl implements MusicService {
         result = musicPlayingRepository.pickToPlaying();
         // 防止选歌的时间超过音乐链接的有效时长
         if (result.getPickTime() + jusicProperties.getMusicExpireTime() <= System.currentTimeMillis()) {
-            Music music = this.getMusic(result.getId());
-            musicPlayingRepository.leftPush(music);
-            log.info("音乐链接已超时, 已更新链接");
+            String musicUrl = this.getMusicUrl(result.getId());
+            if (Objects.nonNull(musicUrl)) {
+                result.setUrl(musicUrl);
+                log.info("音乐链接已超时, 已更新链接");
+            } else {
+                log.info("音乐链接更新失败, 接下来客户端音乐链接可能会失效, 请检查音乐服务");
+            }
         }
 
         musicPlayingRepository.keepTheOne();
@@ -165,6 +170,37 @@ public class MusicServiceImpl implements MusicService {
         }
 
         return music;
+    }
+
+    @Override
+    public String getMusicUrl(String musicId) {
+        HttpResponse<String> response = null;
+        String result = null;
+
+        Integer failCount = 0;
+
+        while (failCount < jusicProperties.getRetryCount()) {
+            try {
+                response = Unirest.get(jusicProperties.getMusicServeDomain() + "/netease/song/" + musicId + "/url")
+                        .asString();
+
+                if (response.getStatus() != 200) {
+                    failCount++;
+                } else {
+                    JSONObject jsonObject = JSONObject.parseObject(response.getBody());
+                    log.info("获取音乐链接结果：{}, response: {}", jsonObject.get("message"), jsonObject);
+                    if (jsonObject.get("code").equals(1)) {
+                        result = JSONObject.parseObject(jsonObject.get("data").toString()).get("url").toString();
+                        break;
+                    }
+                }
+            } catch (UnirestException e) {
+                failCount++;
+                log.error("音乐链接获取异常, 请检查音乐服务; UnirestException: [{}]", e.getMessage());
+            }
+        }
+
+        return result;
     }
 
     @Override
