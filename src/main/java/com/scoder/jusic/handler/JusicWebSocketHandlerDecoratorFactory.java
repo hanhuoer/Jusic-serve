@@ -11,8 +11,11 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 @Component
 public class JusicWebSocketHandlerDecoratorFactory implements WebSocketHandlerDecoratorFactory {
 
-    @Autowired
-    private JusicWebSocketHandler jusicWebSocketHandler;
+    private final JusicWebSocketHandler jusicWebSocketHandler;
+
+    public JusicWebSocketHandlerDecoratorFactory(JusicWebSocketHandler jusicWebSocketHandler) {
+        this.jusicWebSocketHandler = jusicWebSocketHandler;
+    }
 
     @Override
     public WebSocketHandler decorate(WebSocketHandler handler) {

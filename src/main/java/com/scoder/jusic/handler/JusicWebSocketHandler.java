@@ -20,12 +20,12 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 @Slf4j
 public class JusicWebSocketHandler extends WebSocketHandlerDecorator {
 
-    public JusicWebSocketHandler(WebSocketHandler delegate) {
+    public JusicWebSocketHandler(WebSocketHandler delegate, JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync) {
         super(delegate);
+        this.jusicWebSocketHandlerAsync = jusicWebSocketHandlerAsync;
     }
 
-    @Autowired
-    private JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync;
+    private final JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync;
 
     /**
      * WebSocket 握手成功并且连接状态已经打开之后被调用
