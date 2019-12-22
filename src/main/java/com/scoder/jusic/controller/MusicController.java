@@ -1,6 +1,8 @@
 package com.scoder.jusic.controller;
 
 import com.scoder.jusic.common.message.Response;
+import com.scoder.jusic.common.page.HulkPage;
+import com.scoder.jusic.common.page.Page;
 import com.scoder.jusic.configuration.JusicProperties;
 import com.scoder.jusic.model.Chat;
 import com.scoder.jusic.model.MessageType;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author H
@@ -208,6 +211,18 @@ public class MusicController {
                 sessionService.send(MessageType.NOTICE, Response.success((Object) null, "音乐漂白异常, 可能不在黑名单中"));
             }
         }
+    }
+
+    @MessageMapping("/music/search")
+    public void search(Music music, HulkPage hulkPage, StompHeaderAccessor accessor) {
+        String sessionId = accessor.getHeader("simpSessionId").toString();
+        if (Objects.isNull(music) || Objects.isNull(music.getName())) {
+            log.info("session: {} 尝试搜索音乐, 但关键字为空", sessionId);
+            sessionService.send(sessionId, MessageType.NOTICE, Response.failure((Object) null, "请输入要搜索的关键字"));
+        }
+        Page<List<Music>> page = musicService.search(music, hulkPage);
+        log.info("session: {} 尝试搜索音乐, 关键字: {}, 即将向该用户推送结果", accessor.getHeader("simpSessionId"), music.getName());
+        sessionService.send(sessionId, MessageType.SEARCH, Response.success(page, "搜索结果"));
     }
 
 }

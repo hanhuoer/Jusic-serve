@@ -1,9 +1,11 @@
 package com.scoder.jusic.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.scoder.jusic.common.page.HulkPage;
 import com.scoder.jusic.configuration.JusicProperties;
 import com.scoder.jusic.model.Music;
 import com.scoder.jusic.repository.*;
@@ -258,6 +260,35 @@ public class MusicServiceImpl implements MusicService {
         }
         Music playing = musicPlayingRepository.getPlaying();
         return playing.getId().equals(id);
+    }
+
+    @Override
+    public HulkPage search(Music music, HulkPage hulkPage) {
+        StringBuilder url = new StringBuilder()
+                .append(jusicProperties.getMusicServeDomain())
+                .append("/netease/songs/")
+                .append(music.getName())
+                .append("/search")
+                .append("/").append(hulkPage.getPageIndex() - 1)
+                .append("/").append(hulkPage.getPageSize());
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest.get(url.toString())
+                    .asString();
+            JSONObject responseJsonObject = JSONObject.parseObject(response.getBody());
+            if (responseJsonObject.getInteger("code") == 1) {
+                JSONArray data = responseJsonObject.getJSONObject("data").getJSONArray("data");
+                Integer count = responseJsonObject.getJSONObject("data").getInteger("count");
+                List list = JSONObject.parseObject(JSONObject.toJSONString(data), List.class);
+                hulkPage.setData(list);
+                hulkPage.setTotalSize(count);
+            } else {
+                log.info("音乐搜索接口异常, 请检查音乐服务");
+            }
+        } catch (UnirestException e) {
+            log.error("音乐搜索接口异常, 请检查音乐服务; UnirestException: [{}]", e.getMessage());
+        }
+        return hulkPage;
     }
 
 }

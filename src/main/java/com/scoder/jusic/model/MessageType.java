@@ -16,7 +16,8 @@ public enum MessageType {
     AUTH_ADMIN("AUTH_ADMIN"),
     MUSIC("MUSIC"),
     PICK("PICK"),
-    CHAT("CHAT");
+    CHAT("CHAT"),
+    SEARCH("SEARCH");
 
     MessageType(String type) {
         this.type = type;

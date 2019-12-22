@@ -1,8 +1,11 @@
 package com.scoder.jusic.service;
 
+import com.scoder.jusic.common.page.HulkPage;
+import com.scoder.jusic.common.page.Page;
 import com.scoder.jusic.model.Music;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author H
@@ -116,4 +119,13 @@ public interface MusicService {
      * @return
      */
     boolean isPicked(String id);
+
+    /**
+     * search music
+     * @param music music
+     * @param hulkPage page
+     * @return list
+     */
+    Page<List<Music>> search(Music music, HulkPage hulkPage);
+
 }
