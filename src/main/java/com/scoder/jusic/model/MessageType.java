@@ -17,7 +17,8 @@ public enum MessageType {
     MUSIC("MUSIC"),
     PICK("PICK"),
     CHAT("CHAT"),
-    SEARCH("SEARCH");
+    SEARCH("SEARCH"),
+    SEARCH_PICTURE("SEARCH_PICTURE");
 
     MessageType(String type) {
         this.type = type;

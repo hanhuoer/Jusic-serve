@@ -1,9 +1,12 @@
 package com.scoder.jusic.controller;
 
 import com.scoder.jusic.common.message.Response;
+import com.scoder.jusic.common.page.HulkPage;
+import com.scoder.jusic.common.page.Page;
 import com.scoder.jusic.model.Chat;
 import com.scoder.jusic.model.MessageType;
 import com.scoder.jusic.model.User;
+import com.scoder.jusic.service.ChatService;
 import com.scoder.jusic.service.SessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author H
@@ -23,6 +27,8 @@ public class ChatController {
 
     @Autowired
     private SessionService sessionService;
+    @Autowired
+    private ChatService chatService;
     private static final List<String> roles = new ArrayList<String>() {{
         add("root");
         add("admin");
@@ -72,6 +78,19 @@ public class ChatController {
             sessionService.unblack(user.getSessionId());
             log.info("session: {} 用户: {} 已被移除黑名单", sessionId, user.getSessionId());
             sessionService.send(sessionId, MessageType.NOTICE, Response.success((Object) null, "已移除黑名单"));
+        }
+    }
+
+    @MessageMapping("/chat/picture/search")
+    public void pictureSearch(Chat chat, HulkPage hulkPage, StompHeaderAccessor accessor) {
+        String sessionId = accessor.getHeader("simpSessionId").toString();
+        if (Objects.isNull(chat) || Objects.isNull(chat.getContent())) {
+            log.info("session: {} 尝试搜索图片, 但关键字为空", sessionId);
+            sessionService.send(sessionId, MessageType.NOTICE, Response.failure((Object) null, "请输入要搜索的关键字"));
+        } else {
+            Page<List> page = chatService.pictureSearch(chat.getContent(), hulkPage);
+            log.info("session: {} 尝试搜索图片, 关键字: {}, 即将向该用户推送结果", sessionId, chat.getContent());
+            sessionService.send(sessionId, MessageType.SEARCH_PICTURE, Response.success(page, "搜索结果"));
         }
     }
 
