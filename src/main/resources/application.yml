@@ -7,6 +7,12 @@ spring:
     port: 6379
     database: 1
     password:
+  mail:
+    host:
+    port:
+    username:
+    password:
+    default-encoding:
 
 jusic:
   music-expire-time: 1200000
