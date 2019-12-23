@@ -49,6 +49,10 @@ public class Music extends Message implements Serializable {
      */
     private Album album;
     /**
+     * privilege
+     */
+    private Privilege privilege;
+    /**
      * 选歌时间，毫秒时间戳
      */
     private long pickTime;
