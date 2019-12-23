@@ -56,6 +56,14 @@ public class JusicProperties {
      * 音乐服务
      */
     private String musicServeDomain = "http://localhost";
+    /**
+     * mail send from
+     */
+    private String mailSendFrom = "xx@email.com";
+    /**
+     * mail send to
+     */
+    private String mailSendTo = "xx@email.com";
 
     /**
      * redis keys

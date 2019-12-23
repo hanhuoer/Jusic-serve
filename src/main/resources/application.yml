@@ -14,5 +14,6 @@ jusic:
   vote-rate: 0.3
   default-music-file: file:music/default-list.txt
   music-serve-domain: 'http://domain'
-
+  mail-send-from: 'xx@email.com'
+  mail-send-to: 'xx@email.com'
 
