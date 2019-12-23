@@ -57,7 +57,8 @@ public class MusicController {
 
         // 点歌结果反馈
         Music pick = musicService.getMusic(music.getName());
-        if (null == pick) {
+        boolean isNull = null == pick || (null == pick.getId() && null == pick.getUrl() && null == pick.getDuration());
+        if (isNull) {
             log.info("点歌失败, 可能音乐不存在, 关键字: {}, 即将向客户端反馈点歌失败消息", music.getName());
             sessionService.send(MessageType.NOTICE, Response.failure((Object) null, "点歌失败"));
         } else if (musicService.isBlack(pick.getId())) {
