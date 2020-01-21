@@ -108,7 +108,9 @@
 
 Jusic：[Jusic 点歌台](http://music.scoder.club/)
 
-![preview](./doc/images/preview1.png)
+![preview](./doc/images/D453D047-42FA-4339-9E14-B23F354B3228.png)
+
+![preview1](./doc/images/EFF30901-6EB1-466A-9BDF-77549039A150.png)
 
 
 
