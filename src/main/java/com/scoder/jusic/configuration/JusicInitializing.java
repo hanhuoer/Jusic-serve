@@ -96,11 +96,11 @@ public class JusicInitializing implements InitializingBean {
         log.info("清理工作开始");
         sessionRepository.destroy();
         sessionBlackRepository.destroy();
-        configRepository.destroy();
+//        configRepository.destroy();
         musicDefaultRepository.destroy();
-        musicPlayingRepository.destroy();
-        musicPickRepository.destroy();
-        musicVoteRepository.destroy();
+//        musicPlayingRepository.destroy();
+//        musicPickRepository.destroy();
+//        musicVoteRepository.destroy();
         log.info("清理工作完成");
     }
 }
