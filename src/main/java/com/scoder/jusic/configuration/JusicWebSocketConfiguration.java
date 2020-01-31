@@ -1,6 +1,6 @@
 package com.scoder.jusic.configuration;
 
-import com.scoder.jusic.handler.JusicWebSocketHandlerDecoratorFactory;
+import com.scoder.jusic.handler.JusicWebSocketHandler;
 import com.scoder.jusic.interceptor.JusicWebSocketHandshakeInterceptor;
 import com.scoder.jusic.interceptor.JusicWebSocketInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class JusicWebSocketConfiguration implements WebSocketMessageBrokerConfig
     @Autowired
     private JusicWebSocketHandshakeInterceptor jusicWebSocketHandshakeInterceptor;
     @Autowired
-    private JusicWebSocketHandlerDecoratorFactory jusicWebSocketHandlerDecoratorFactory;
+    private JusicWebSocketHandler jusicWebSocketHandler;
 
     /**
      * 有关客户端建立连接的部分
@@ -68,6 +68,6 @@ public class JusicWebSocketConfiguration implements WebSocketMessageBrokerConfig
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
         // 加入自定义的 handler
-        registry.addDecoratorFactory(jusicWebSocketHandlerDecoratorFactory);
+        registry.addDecoratorFactory(factor -> jusicWebSocketHandler);
     }
 }
