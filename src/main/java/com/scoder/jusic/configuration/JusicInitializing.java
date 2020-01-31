@@ -1,6 +1,7 @@
 package com.scoder.jusic.configuration;
 
 import com.scoder.jusic.repository.*;
+import com.scoder.jusic.service.MusicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * @author H
@@ -28,8 +30,9 @@ public class JusicInitializing implements InitializingBean {
     private final MusicPickRepository musicPickRepository;
     private final MusicVoteRepository musicVoteRepository;
     private final SessionBlackRepository sessionBlackRepository;
+    private final MusicService musicService;
 
-    public JusicInitializing(ConfigRepository configRepository, SessionRepository sessionRepository, MusicDefaultRepository musicDefaultRepository, MusicPlayingRepository musicPlayingRepository, MusicPickRepository musicPickRepository, MusicVoteRepository musicVoteRepository, JusicProperties jusicProperties, ResourceLoader resourceLoader, SessionBlackRepository sessionBlackRepository) {
+    public JusicInitializing(ConfigRepository configRepository, SessionRepository sessionRepository, MusicDefaultRepository musicDefaultRepository, MusicPlayingRepository musicPlayingRepository, MusicPickRepository musicPickRepository, MusicVoteRepository musicVoteRepository, JusicProperties jusicProperties, ResourceLoader resourceLoader, SessionBlackRepository sessionBlackRepository, MusicService musicService) {
         this.configRepository = configRepository;
         this.sessionRepository = sessionRepository;
         this.musicDefaultRepository = musicDefaultRepository;
@@ -39,6 +42,7 @@ public class JusicInitializing implements InitializingBean {
         this.jusicProperties = jusicProperties;
         this.resourceLoader = resourceLoader;
         this.sessionBlackRepository = sessionBlackRepository;
+        this.musicService = musicService;
     }
 
     @Override
@@ -68,8 +72,15 @@ public class JusicInitializing implements InitializingBean {
      */
     private void initialize() throws IOException {
         log.info("初始化工作开始");
-        this.initDefaultMusicId();
+        // 1. 初始化 config
         configRepository.initialize();
+        // 2. 初始化 默认播放列表
+        List<String> playlistSongs = musicService.getPlaylistSongs(jusicProperties.getPlaylistId());
+        if (playlistSongs.size() == 0) {
+            this.initDefaultMusicId();
+        } else {
+            jusicProperties.setDefaultList(playlistSongs);
+        }
         musicDefaultRepository.initialize();
         log.info("初始化工作完成");
     }

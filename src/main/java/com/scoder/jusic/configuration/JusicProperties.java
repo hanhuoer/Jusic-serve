@@ -45,6 +45,10 @@ public class JusicProperties {
      */
     private List<String> defaultList = new LinkedList<>();
     /**
+     * 默认播放歌单，这里默认为网易云音乐的热歌榜
+     */
+    private Integer playlistId = 3778678;
+    /**
      * root 密码
      */
     private String roleRootPassword = "123456";
