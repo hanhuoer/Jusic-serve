@@ -14,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author H
@@ -289,6 +286,37 @@ public class MusicServiceImpl implements MusicService {
             log.error("音乐搜索接口异常, 请检查音乐服务; UnirestException: [{}]", e.getMessage());
         }
         return hulkPage;
+    }
+
+    @Override
+    public List<String> getPlaylistSongs(Integer playlistId) {
+        StringBuilder url = new StringBuilder()
+                .append(jusicProperties.getMusicServeDomain())
+                .append("/netease/playlist")
+                .append("/").append(playlistId)
+                .append("/songs");
+
+        HttpResponse<String> response = null;
+        List<String> result = new ArrayList<>();
+
+        try {
+            response = Unirest.get(url.toString())
+                    .asString();
+            JSONObject responseJsonObject = JSONObject.parseObject(response.getBody());
+            if (responseJsonObject.getInteger("code") == 1) {
+                JSONObject data = responseJsonObject.getJSONObject("data");
+                JSONArray tracks = data.getJSONArray("tracks");
+                for (Object track : tracks) {
+                    JSONObject t = (JSONObject) track;
+                    result.add(t.getString("id"));
+                }
+            } else {
+                log.info("歌单列表接口异常, 请检查音乐服务");
+            }
+        } catch (UnirestException e) {
+            log.error("歌单列表接口异常, 请检查音乐服务; UnirestException: [{}]", e.getMessage());
+        }
+        return result;
     }
 
 }
