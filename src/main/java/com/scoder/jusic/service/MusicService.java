@@ -128,4 +128,12 @@ public interface MusicService {
      */
     Page<List<Music>> search(Music music, HulkPage hulkPage);
 
+    /**
+     * 获取歌单音乐列表
+     *
+     * @param playlistId 歌单 id
+     * @return 音乐 id 列表
+     */
+    List<String> getPlaylistSongs(Integer playlistId);
+
 }

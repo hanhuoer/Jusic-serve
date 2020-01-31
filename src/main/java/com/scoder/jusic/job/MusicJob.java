@@ -94,10 +94,10 @@ public class MusicJob {
     private boolean isPlayingOver() {
         Long lastMusicDuration = configRepository.getLastMusicDuration();
         Long lastMusicPushTime = configRepository.getLastMusicPushTime();
-        if (null != lastMusicDuration && null != lastMusicPushTime) {
-            return (lastMusicPushTime + lastMusicDuration) - System.currentTimeMillis() <= 0;
+        if (null == lastMusicDuration || null == lastMusicPushTime) {
+            return true;
         }
-        return false;
+        return (lastMusicPushTime + lastMusicDuration - 4000) - System.currentTimeMillis() <= 0;
     }
 
     private boolean isPlayingNull() {

@@ -20,12 +20,12 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
 @Slf4j
 public class JusicWebSocketHandler extends WebSocketHandlerDecorator {
 
-    public JusicWebSocketHandler(WebSocketHandler delegate, JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync) {
-        super(delegate);
-        this.jusicWebSocketHandlerAsync = jusicWebSocketHandlerAsync;
-    }
+    @Autowired
+    private JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync;
 
-    private final JusicWebSocketHandlerAsync jusicWebSocketHandlerAsync;
+    public JusicWebSocketHandler(WebSocketHandler delegate) {
+        super(delegate);
+    }
 
     /**
      * WebSocket 握手成功并且连接状态已经打开之后被调用
@@ -54,46 +54,6 @@ public class JusicWebSocketHandler extends WebSocketHandlerDecorator {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         jusicWebSocketHandlerAsync.afterConnectionClosed(session, closeStatus);
         super.afterConnectionClosed(session, closeStatus);
-    }
-
-
-    /**
-     * holder 取自 {@link org.springframework.web.socket.messaging.SubProtocolWebSocketHandler}
-     */
-    public static class WebSocketSessionHolder {
-
-        private final WebSocketSession session;
-
-        private final long createTime;
-
-        private volatile boolean hasHandledMessages;
-
-        WebSocketSessionHolder(WebSocketSession session) {
-            this.session = session;
-            this.createTime = System.currentTimeMillis();
-        }
-
-        public WebSocketSession getSession() {
-            return this.session;
-        }
-
-        public long getCreateTime() {
-            return this.createTime;
-        }
-
-        public void setHasHandledMessages() {
-            this.hasHandledMessages = true;
-        }
-
-        public boolean hasHandledMessages() {
-            return this.hasHandledMessages;
-        }
-
-        @Override
-        public String toString() {
-            return "WebSocketSessionHolder[session=" + this.session + ", createTime=" +
-                    this.createTime + ", hasHandledMessages=" + this.hasHandledMessages + "]";
-        }
     }
 
 }
