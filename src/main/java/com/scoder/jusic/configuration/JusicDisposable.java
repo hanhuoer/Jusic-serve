@@ -32,11 +32,7 @@ public class JusicDisposable implements DisposableBean {
     public void destroy() throws Exception {
         log.info("销毁工作开始");
         sessionRepository.destroy();
-//        configRepository.destroy();
         musicDefaultRepository.destroy();
-//        musicPlayingRepository.destroy();
-//        musicPickRepository.destroy();
-//        musicVoteRepository.destroy();
         log.info("销毁工作完成");
     }
 
