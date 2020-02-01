@@ -37,6 +37,10 @@ public class MusicServiceImpl implements MusicService {
     private SessionRepository sessionRepository;
     @Autowired
     private MusicBlackRepository musicBlackRepository;
+    @Autowired
+    private ConfigRepository configRepository;
+    @Autowired
+    private JusicProperties.RedisKeys redisKeys;
 
 
     /**
@@ -317,6 +321,18 @@ public class MusicServiceImpl implements MusicService {
             log.error("歌单列表接口异常, 请检查音乐服务; UnirestException: [{}]", e.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public boolean setMusicDefaultList(String playlistId) {
+        // 1
+        List<String> playlistSongs = this.getPlaylistSongs(Integer.valueOf(playlistId));
+        musicDefaultRepository.destroy();
+        musicDefaultRepository.set(playlistSongs);
+        // 2
+        jusicProperties.setPlaylistId(Integer.valueOf(playlistId));
+        configRepository.put(redisKeys.getPlaylistIdCurrent(), jusicProperties.getPlaylistId());
+        return true;
     }
 
 }

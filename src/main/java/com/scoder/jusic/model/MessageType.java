@@ -18,7 +18,8 @@ public enum MessageType {
     PICK("PICK"),
     CHAT("CHAT"),
     SEARCH("SEARCH"),
-    SEARCH_PICTURE("SEARCH_PICTURE");
+    SEARCH_PICTURE("SEARCH_PICTURE"),
+    PLAYLIST("PLAYLIST");
 
     MessageType(String type) {
         this.type = type;
