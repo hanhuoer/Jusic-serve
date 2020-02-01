@@ -1,12 +1,10 @@
 package com.scoder.jusic.job;
 
 import com.scoder.jusic.common.message.Response;
+import com.scoder.jusic.configuration.JusicProperties;
 import com.scoder.jusic.model.MessageType;
 import com.scoder.jusic.model.Music;
-import com.scoder.jusic.repository.ConfigRepository;
-import com.scoder.jusic.repository.MusicPlayingRepository;
-import com.scoder.jusic.repository.MusicVoteRepository;
-import com.scoder.jusic.repository.SessionRepository;
+import com.scoder.jusic.repository.*;
 import com.scoder.jusic.service.MusicService;
 import com.scoder.jusic.service.SessionService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -36,6 +35,10 @@ public class MusicJob {
     private SessionService sessionService;
     @Autowired
     private MusicService musicService;
+    @Autowired
+    private JusicProperties jusicProperties;
+    @Autowired
+    private MusicDefaultRepository musicDefaultRepository;
 
     /**
      * 广播条件：第一次启动时 playing 为空、音乐播放完毕、投票切歌
@@ -102,6 +105,16 @@ public class MusicJob {
 
     private boolean isPlayingNull() {
         return null == musicPlayingRepository.getPlaying();
+    }
+
+    /**
+     * 每天 00:00 时更新歌单列表
+     */
+    @Scheduled(cron = "0 0 0 * * ? ")
+    private void updatePlaylist() {
+        List<String> playlistSongs = musicService.getPlaylistSongs(jusicProperties.getPlaylistId());
+        musicDefaultRepository.destroy();
+        musicDefaultRepository.set(playlistSongs);
     }
 
 }

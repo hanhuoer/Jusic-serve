@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,5 +57,11 @@ public class MusicDefaultRepositoryImpl implements MusicDefaultRepository {
     public Long add(String[] value) {
         return redisTemplate.opsForSet()
                 .add(redisKeys.getDefaultSet(), value);
+    }
+
+    @Override
+    public Long set(List<String> list) {
+        return redisTemplate.opsForSet()
+            .add(redisKeys.getDefaultSet(), list.toArray());
     }
 }

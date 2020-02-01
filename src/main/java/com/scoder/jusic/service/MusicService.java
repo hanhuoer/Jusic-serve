@@ -136,4 +136,12 @@ public interface MusicService {
      */
     List<String> getPlaylistSongs(Integer playlistId);
 
+    /**
+     * 设置默认列表
+     *
+     * @param playlistId list
+     * @return boolean
+     */
+    boolean setMusicDefaultList(String playlistId);
+
 }

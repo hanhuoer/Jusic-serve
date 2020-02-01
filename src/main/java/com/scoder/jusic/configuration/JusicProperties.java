@@ -136,6 +136,10 @@ public class JusicProperties {
          * 投票通过率, config 子键名
          */
         private String voteSkipRate = "vote_skip_rate";
+        /**
+         * 当前歌单 id
+         */
+        private String playlistIdCurrent = "playlist_id_current";
 
         private final JusicEnvironment jusicEnvironment;
 
