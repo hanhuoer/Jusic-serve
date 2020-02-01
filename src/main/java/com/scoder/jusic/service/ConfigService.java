@@ -11,4 +11,12 @@ public interface ConfigService {
      * @param pushSwitch boolean
      */
     void setPushSwitch(boolean pushSwitch);
+
+    /**
+     * get by key
+     *
+     * @param key key
+     * @return the key's value
+     */
+    Object get(String key);
 }

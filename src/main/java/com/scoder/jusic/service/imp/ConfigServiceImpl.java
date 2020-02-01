@@ -20,4 +20,9 @@ public class ConfigServiceImpl implements ConfigService {
     public void setPushSwitch(boolean pushSwitch) {
         configRepository.setPushSwitch(pushSwitch);
     }
+
+    @Override
+    public Object get(String key) {
+        return configRepository.get(key);
+    }
 }

@@ -58,4 +58,26 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * 手动更新歌单列表
+     *
+     * @param accessor
+     */
+    @MessageMapping("/music/playlist/update")
+    public void playlistUpdate(StompHeaderAccessor accessor) {
+        String sessionId = accessor.getHeader("simpSessionId").toString();
+        String role = sessionService.getRole(sessionId);
+        if (!roles.contains(role)) {
+            log.info("session: {} 尝试手动更新播放列表但没有权限, 已被阻止", sessionId);
+            sessionService.send(sessionId, MessageType.NOTICE, Response.failure((Object) null, "你没有权限"));
+        } else {
+            Object playlistId = configService.get(redisKeys.getPlaylistIdCurrent());
+            if (musicService.setMusicDefaultList((String) playlistId)) {
+                sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, String.format("歌单: %s, 更新成功", playlistId)));
+            } else {
+                sessionService.send(sessionId, MessageType.PLAYLIST, Response.failure((Object) null, String.format("歌单: %s, 更新失败", playlistId)));
+            }
+        }
+    }
+
 }
