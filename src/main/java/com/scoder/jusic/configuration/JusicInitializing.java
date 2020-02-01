@@ -78,8 +78,10 @@ public class JusicInitializing implements InitializingBean {
         List<String> playlistSongs = musicService.getPlaylistSongs(jusicProperties.getPlaylistId());
         if (playlistSongs.size() == 0) {
             this.initDefaultMusicId();
+            log.info("[jusic-init] 歌单: [{}], 初始化", "本地默认");
         } else {
             jusicProperties.setDefaultList(playlistSongs);
+            log.info("[jusic-init] 歌单: [{}], 初始化", jusicProperties.getPlaylistId());
         }
         musicDefaultRepository.initialize();
         log.info("初始化工作完成");
