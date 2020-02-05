@@ -52,8 +52,10 @@ public class PlaylistController {
         } else {
             if (musicService.setMusicDefaultList(playlist.getId())) {
                 sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, "已修改歌单为: " + playlist.getId()));
+                log.info("session: {} 修改歌单为: {} 结果: 成功", sessionId, playlist.getId());
             } else {
                 sessionService.send(sessionId, MessageType.PLAYLIST, Response.failure((Object) null, "修改歌单: " + playlist.getId() + " 失败"));
+                log.info("session: {} 修改歌单为: {} 结果: 失败", sessionId, playlist.getId());
             }
         }
     }
@@ -68,14 +70,16 @@ public class PlaylistController {
         String sessionId = accessor.getHeader("simpSessionId").toString();
         String role = sessionService.getRole(sessionId);
         if (!roles.contains(role)) {
-            log.info("session: {} 尝试手动更新播放列表但没有权限, 已被阻止", sessionId);
+            log.info("session: {} 尝试手动刷新播放列表但没有权限, 已被阻止", sessionId);
             sessionService.send(sessionId, MessageType.NOTICE, Response.failure((Object) null, "你没有权限"));
         } else {
-            Object playlistId = configService.get(redisKeys.getPlaylistIdCurrent());
-            if (musicService.setMusicDefaultList((String) playlistId)) {
-                sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, String.format("歌单: %s, 更新成功", playlistId)));
+            Integer playlistId = (Integer) configService.get(redisKeys.getPlaylistIdCurrent());
+            if (musicService.setMusicDefaultList(playlistId.toString())) {
+                sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, String.format("歌单: %s, 刷新成功", playlistId)));
+                log.info("session: {} 刷新歌单: {} 结果: 失败", sessionId, playlistId);
             } else {
-                sessionService.send(sessionId, MessageType.PLAYLIST, Response.failure((Object) null, String.format("歌单: %s, 更新失败", playlistId)));
+                sessionService.send(sessionId, MessageType.PLAYLIST, Response.failure((Object) null, String.format("歌单: %s, 刷新失败", playlistId)));
+                log.info("session: {} 刷新歌单: {} 结果: 失败", sessionId, playlistId);
             }
         }
     }

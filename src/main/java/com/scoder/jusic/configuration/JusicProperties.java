@@ -47,7 +47,7 @@ public class JusicProperties {
     /**
      * 默认播放歌单，这里默认为网易云音乐的热歌榜
      */
-    private Integer playlistId = 3778678;
+    private String playlistId = "3778678";
     /**
      * root 密码
      */

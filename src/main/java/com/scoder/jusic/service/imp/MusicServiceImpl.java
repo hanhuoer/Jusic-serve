@@ -293,7 +293,7 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<String> getPlaylistSongs(Integer playlistId) {
+    public List<String> getPlaylistSongs(String playlistId) {
         StringBuilder url = new StringBuilder()
                 .append(jusicProperties.getMusicServeDomain())
                 .append("/netease/playlist")
@@ -326,11 +326,11 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public boolean setMusicDefaultList(String playlistId) {
         // 1
-        List<String> playlistSongs = this.getPlaylistSongs(Integer.valueOf(playlistId));
+        List<String> playlistSongs = this.getPlaylistSongs(playlistId);
         musicDefaultRepository.destroy();
         musicDefaultRepository.set(playlistSongs);
         // 2
-        jusicProperties.setPlaylistId(Integer.valueOf(playlistId));
+        jusicProperties.setPlaylistId(playlistId);
         configRepository.put(redisKeys.getPlaylistIdCurrent(), jusicProperties.getPlaylistId());
         return true;
     }

@@ -134,7 +134,7 @@ public interface MusicService {
      * @param playlistId 歌单 id
      * @return 音乐 id 列表
      */
-    List<String> getPlaylistSongs(Integer playlistId);
+    List<String> getPlaylistSongs(String playlistId);
 
     /**
      * 设置默认列表
