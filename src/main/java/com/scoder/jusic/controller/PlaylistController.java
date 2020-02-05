@@ -76,7 +76,7 @@ public class PlaylistController {
             String playlistId = (String) configService.get(redisKeys.getPlaylistIdCurrent());
             if (musicService.setMusicDefaultList(playlistId)) {
                 sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, String.format("歌单: %s, 刷新成功", playlistId)));
-                log.info("session: {} 刷新歌单: {} 结果: 失败", sessionId, playlistId);
+                log.info("session: {} 刷新歌单: {} 结果: 成功", sessionId, playlistId);
             } else {
                 sessionService.send(sessionId, MessageType.PLAYLIST, Response.failure((Object) null, String.format("歌单: %s, 刷新失败", playlistId)));
                 log.info("session: {} 刷新歌单: {} 结果: 失败", sessionId, playlistId);
