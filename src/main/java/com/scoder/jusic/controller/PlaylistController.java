@@ -73,8 +73,8 @@ public class PlaylistController {
             log.info("session: {} 尝试手动刷新播放列表但没有权限, 已被阻止", sessionId);
             sessionService.send(sessionId, MessageType.NOTICE, Response.failure((Object) null, "你没有权限"));
         } else {
-            Integer playlistId = (Integer) configService.get(redisKeys.getPlaylistIdCurrent());
-            if (musicService.setMusicDefaultList(playlistId.toString())) {
+            String playlistId = (String) configService.get(redisKeys.getPlaylistIdCurrent());
+            if (musicService.setMusicDefaultList(playlistId)) {
                 sessionService.send(sessionId, MessageType.PLAYLIST, Response.success((Object) null, String.format("歌单: %s, 刷新成功", playlistId)));
                 log.info("session: {} 刷新歌单: {} 结果: 失败", sessionId, playlistId);
             } else {
