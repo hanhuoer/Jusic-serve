@@ -19,7 +19,7 @@ jusic:
   retry-count: 3
   vote-rate: 0.3
   default-music-file: file:music/default-list.txt
-  playlist-id: 3778678
+  playlist-id: '3778678'
   music-serve-domain: 'http://domain'
   mail-send-from: 'xx@email.com'
   mail-send-to: 'xx@email.com'
