@@ -42,7 +42,7 @@ public class PlaylistController {
      * @param playlist
      * @param accessor
      */
-    @MessageMapping("/music/playlist/modify")
+    @MessageMapping("/playlist/modify")
     public void playlistModify(Playlist playlist, StompHeaderAccessor accessor) {
         String sessionId = accessor.getHeader("simpSessionId").toString();
         String role = sessionService.getRole(sessionId);
@@ -63,7 +63,7 @@ public class PlaylistController {
      *
      * @param accessor
      */
-    @MessageMapping("/music/playlist/update")
+    @MessageMapping("/playlist/update")
     public void playlistUpdate(StompHeaderAccessor accessor) {
         String sessionId = accessor.getHeader("simpSessionId").toString();
         String role = sessionService.getRole(sessionId);
